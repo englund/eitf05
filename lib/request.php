@@ -3,10 +3,35 @@ namespace Lib;
 
 class Request
 {
+    public $content_type;
     public $action;
+    public $args;
 
-    public function __construct($params)
+    public function __construct($method, $content_type, $params)
     {
-        $this->action = array_key_exists('action', $params) ? $params['action'] : '';
+        $this->method = $method;
+        $this->content_type = $content_type;
+
+        if (isset($params['action'])) {
+            $this->action = $params['action'];
+            unset($params['action']);
+        }
+        $this->args = array_merge($params, $this->get_request_data());
+    }
+
+    /**
+     * Get the request data like POST parameters.
+     *
+     * @return Array of the parameters
+     */
+    private function get_request_data()
+    {
+        $raw_request_data = file_get_contents('php://input');
+        if ($this->content_type === 'application/json') {
+            $output = json_decode($raw_request_data, true);
+        } else {
+            parse_str($raw_request_data, $output);
+        }
+        return empty($output) ? array() : $output;
     }
 }

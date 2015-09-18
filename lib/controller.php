@@ -11,7 +11,11 @@ class Controller
 
     public function __construct()
     {
-        $this->request = new Request($_REQUEST);
+        $method = $_SERVER['REQUEST_METHOD'];
+        $content_type = isset($_SERVER['CONTENT_TYPE']) ? $_SERVER['CONTENT_TYPE'] : '';
+        $params = $_REQUEST;
+
+        $this->request = new Request($method, $content_type, $params);
         $this->response = new Response();
 
         try {
