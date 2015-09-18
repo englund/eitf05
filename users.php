@@ -17,15 +17,17 @@ class Users extends Lib\Controller
         $username = $args['username'];
         $password = $args['password'];
         // TODO: validate and shit
+
         $user = User::authenticate($username, $password);
         $this->response->set('user', $user);
     }
 
-    public function user()
+    public function retrieve()
     {
         $args = $this->request->args;
-        $username = $args['username'];
+        $username = isset($args['username']) ? $args['username'] : null;
         // TODO: validate and shit
+
         $user = User::retrieve($username);
         $this->response->set('user', $user);
     }
@@ -33,10 +35,11 @@ class Users extends Lib\Controller
     public function create()
     {
         $args = $this->request->args;
-        // TODO: validate and shit
         $username = $args['username'];
         $password = $args['password'];
         $address = $args['address'];
+        // TODO: validate and shit
+
         $user = User::create($username, $password, $address);
         $this->response->set('user', $user);
     }
