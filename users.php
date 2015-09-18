@@ -1,6 +1,8 @@
 <?php
 require_once 'app.php';
 
+use Models\User;
+
 class Users extends Lib\Controller
 {
     public function index()

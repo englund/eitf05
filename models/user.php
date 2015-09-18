@@ -1,9 +1,10 @@
 <?php
+namespace Models;
 
-use Lib\Database;
-use Lib\Security;
+use \Lib\Database;
+use \Lib\Security;
 
-class User extends Lib\Model
+class User extends \Lib\Model
 {
     public $username;
     public $address;
@@ -25,13 +26,13 @@ class User extends Lib\Model
     {
         try {
             $user = self::retrieve($username);
-        } catch (Lib\Exceptions\NotFoundException $e) {
-            throw new Lib\Exceptions\UnauthorizedException();
+        } catch (\Lib\Exceptions\NotFoundException $e) {
+            throw new \Lib\Exceptions\UnauthorizedException();
         }
 
         $hashed_password = self::generate_hash($password, $user->salt);
         if ($user->password !== $hashed_password) {
-            throw new Lib\Exceptions\UnauthorizedException();
+            throw new \Lib\Exceptions\UnauthorizedException();
         }
         return $user;
     }
@@ -58,7 +59,7 @@ class User extends Lib\Model
 
         if (!is_null($username)) {
             if (empty($users)) {
-                throw new Lib\Exceptions\NotFoundException();
+                throw new \Lib\Exceptions\NotFoundException();
             }
             return $users[0];
         }
