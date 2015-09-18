@@ -22,6 +22,8 @@ class Controller
             $this->handleRequest();
         } catch (Exceptions\NotFoundException $e) {
             $this->response->set_header(Response::HTTP_NOT_FOUND);
+        } catch (Exceptions\UnauthorizedException $e) {
+            $this->response->set_header(Response::HTTP_UNAUTHORIZED);
         }
     }
 
