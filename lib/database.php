@@ -21,6 +21,7 @@ class Database
         if (!$query->execute($params)) {
             throw new Exceptions\DatabaseException($sql);
         }
+        return $db->lastInsertId();
     }
 
     /**
@@ -45,6 +46,11 @@ class Database
         }
 
         return $query->fetchAll();
+    }
+
+    public static function now()
+    {
+        return date('Y-m-d H:i:s', time());
     }
 
     /**
