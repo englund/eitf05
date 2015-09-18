@@ -14,16 +14,10 @@ class User extends Lib\Model
         $this->address = $address;
     }
 
-    public static function retrieve($username = null)
+    public static function retrieve()
     {
-        $params = array();
         $sql = 'SELECT username, address FROM users';
-        if (!is_null($username)) {
-            $sql .= ' WHERE username=:username';
-            $params['username'] = $username;
-        }
-
-        $result = Database::select($sql, $params);
+        $result = Database::select($sql);
         $users = array();
         foreach ($result as $r) {
             $users[] = new User($r['username'], $r['address']);
