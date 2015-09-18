@@ -7,6 +7,6 @@ class Request
 
     public function __construct($params)
     {
-        $this->action = $params['action'];
+        $this->action = array_key_exists('action', $params) ? $params['action'] : '';
     }
 }
