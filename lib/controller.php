@@ -21,7 +21,7 @@ class Controller
         try {
             $this->handleRequest();
         } catch (Exceptions\NotFoundException $e) {
-            // TODO: Do some cool stuff like displaying an error page or something!
+            $this->response->set_header(Response::HTTP_NOT_FOUND);
         }
     }
 
