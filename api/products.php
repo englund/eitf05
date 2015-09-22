@@ -39,6 +39,7 @@ class Products extends Lib\Controller
         // TODO: validate and shit
 
         $product = Product::create($name, $price, $quantity);
+        $this->response->set_header(Lib\Response::HTTP_CREATED);
         $this->response->set('product', $product);
     }
 }

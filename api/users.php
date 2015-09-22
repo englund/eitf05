@@ -53,6 +53,7 @@ class Users extends Lib\Controller
         // TODO: validate and shit
 
         $user = User::create($username, $password, $address);
+        $this->response->set_header(Lib\Response::HTTP_CREATED);
         $this->response->set('user', $user);
     }
 }
