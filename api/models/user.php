@@ -22,6 +22,11 @@ class User extends \Lib\Model
         $this->is_admin = $is_admin;
     }
 
+    public function is_admin()
+    {
+        return $this->is_admin;
+    }
+
     public static function authenticate($username, $password)
     {
         try {
@@ -48,12 +53,13 @@ class User extends \Lib\Model
         $result = Database::select($sql, $params);
         $users = array();
         foreach ($result as $r) {
+            $is_admin = ($r['is_admin'] === '1') ? true : false;
             $users[] = new User(
                 $r['username'],
                 $r['address'],
                 $r['password'],
                 $r['salt'],
-                $r['is_admin']
+                $is_admin
             );
         }
 

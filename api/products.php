@@ -23,6 +23,11 @@ class Products extends Lib\Controller
 
     public function create()
     {
+        $user = $this->session->get_user();
+        if (!$user->is_admin()) {
+            throw new Lib\Exceptions\UnauthorizedException();
+        }
+
         $args = $this->request->args;
 
         $name = $args['name'];

@@ -13,13 +13,23 @@ class Users extends Lib\Controller
 
     public function login()
     {
-        $args = $this->request->args;
-        $username = $args['username'];
-        $password = $args['password'];
-        // TODO: validate and shit
+        if (!$this->session->is_authenticated()) {
+            $args = $this->request->args;
+            $username = $args['username'];
+            $password = $args['password'];
+            // TODO: validate and shit
 
-        $user = User::authenticate($username, $password);
+            $user = User::authenticate($username, $password);
+            $this->session->set_user($user);
+        } else {
+            $user = $this->session->get_user();
+        }
         $this->response->set('user', $user);
+    }
+
+    public function logout()
+    {
+        $this->session->destroy();
     }
 
     public function retrieve()
