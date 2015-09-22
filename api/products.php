@@ -45,4 +45,3 @@ class Products extends Lib\Controller
 }
 
 $controller = new Products();
-$controller->response->display();

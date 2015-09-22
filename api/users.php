@@ -59,4 +59,3 @@ class Users extends Lib\Controller
 }
 
 $controller = new Users();
-$controller->response->display();

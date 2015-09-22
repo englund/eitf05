@@ -8,8 +8,8 @@ use Lib\Session;
 class Controller
 {
     protected $request;
-    public $response;
-    public $session;
+    protected $response;
+    protected $session;
 
     public function __construct()
     {
@@ -28,6 +28,8 @@ class Controller
         } catch (Exceptions\UnauthorizedException $e) {
             $this->response->set_header(Response::HTTP_UNAUTHORIZED);
         }
+
+        $this->response->display();
     }
 
     private function handleRequest()
