@@ -7,18 +7,21 @@ class Products extends Lib\Controller
 {
     public function index()
     {
-        $products = Product::retrieve();
-        $this->response->set('products', $products);
+        $this->retrieve();
     }
 
     public function retrieve()
     {
         $args = $this->request->args;
-        $id = isset($args['id']) ? $args['id'] : null;
-        // TODO: validate and shit
 
-        $product = Product::retrieve($id);
-        $this->response->set('product', $product);
+        if (isset($args['id'])) {
+            $id = $args['id']; // TODO: validate
+            $product = Product::retrieve($id);
+            $this->response->set('product', $product);
+        } else {
+            $products = Product::retrieve();
+            $this->response->set('products', $products);
+        }
     }
 
     public function create()

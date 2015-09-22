@@ -7,8 +7,7 @@ class Users extends Lib\Controller
 {
     public function index()
     {
-        $users = User::retrieve();
-        $this->response->set('users', $users);
+        $this->retrieve();
     }
 
     public function login()
@@ -35,11 +34,14 @@ class Users extends Lib\Controller
     public function retrieve()
     {
         $args = $this->request->args;
-        $username = isset($args['username']) ? $args['username'] : null;
-        // TODO: validate and shit
-
-        $user = User::retrieve($username);
-        $this->response->set('user', $user);
+        if (isset($args['username'])) {
+            $username = $args['username']; // TODO: validate
+            $user = User::retrieve($username);
+            $this->response->set('user', $user);
+        } else {
+            $users = User::retrieve();
+            $this->response->set('users', $users);
+        }
     }
 
     public function create()
