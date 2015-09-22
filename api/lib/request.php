@@ -17,6 +17,9 @@ class Request
             unset($params['action']);
         }
         $this->args = array_merge($params, $this->get_request_data());
+
+        Log::debug('Request',
+            sprintf('Data: %s', var_export(Log::filter($this->args), true)));
     }
 
     /**

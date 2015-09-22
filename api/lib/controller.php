@@ -17,6 +17,11 @@ class Controller
         $content_type = isset($_SERVER['CONTENT_TYPE']) ? $_SERVER['CONTENT_TYPE'] : '';
         $params = $_REQUEST;
 
+        Log::debug('Controller',
+            sprintf('Begin request (method: "%s", content_type: "%s")', $method, $content_type));
+        Log::debug('Controller',
+            sprintf('Params: %s', var_export(Log::filter($params), true)));
+
         $this->request = new Request($method, $content_type, $params);
         $this->response = new Response();
         $this->session = new Session();
@@ -30,10 +35,14 @@ class Controller
         }
 
         $this->response->display();
+
+        Log::debug('Controller', 'End request');
     }
 
     private function handleRequest()
     {
+        Log::debug('Controller', 'Handle request');
+
         $action = $this->request->action;
         if (empty($action)) {
             $this->index();

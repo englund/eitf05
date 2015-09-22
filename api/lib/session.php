@@ -8,6 +8,8 @@ class Session
     public function __construct()
     {
         session_start();
+
+        Log::debug('Session', 'Start session');
     }
 
     public function set_user($user)
@@ -31,6 +33,8 @@ class Session
         }
 
         session_destroy();
+
+        Log::debug('Session', 'Destroy session');
     }
 
     public function get_user()

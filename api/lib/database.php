@@ -15,6 +15,9 @@ class Database
      */
     public static function update($sql, $params)
     {
+        Log::debug('Database', sprintf('Update query: %s', $sql));
+        Log::debug('Database', sprintf('Params: %s', var_export($params, true)));
+
         $db = static::get_connection();
 
         $query = $db->prepare($sql);
@@ -36,6 +39,9 @@ class Database
      */
     public static function select($sql, $params = array())
     {
+        Log::debug('Database', sprintf('Select query: %s', $sql));
+        Log::debug('Database', sprintf('Params: %s', var_export($params, true)));
+
         $db = static::get_connection();
 
         $query = $db->prepare($sql);

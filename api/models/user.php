@@ -1,6 +1,7 @@
 <?php
 namespace Models;
 
+use \Lib\Log;
 use \Lib\Database;
 use \Lib\Security;
 
@@ -29,14 +30,20 @@ class User extends \Lib\Model
 
     public static function authenticate($username, $password)
     {
+        Log::info('User', sprintf('Authenticate user: "%s"', $username));
+
         try {
             $user = self::retrieve($username);
         } catch (\Lib\Exceptions\NotFoundException $e) {
+            Log::info('User', sprintf('User not found: "%s"', $username));
+
             throw new \Lib\Exceptions\UnauthorizedException();
         }
 
         $hashed_password = self::generate_hash($password, $user->salt);
         if ($user->password !== $hashed_password) {
+            Log::info('User', sprintf('Password does not match for user: "%s"', $username));
+
             throw new \Lib\Exceptions\UnauthorizedException();
         }
         return $user;

@@ -37,5 +37,7 @@ class Response
     public function set_header($http_status_code)
     {
         http_response_code($http_status_code);
+
+        Log::debug('Response', sprintf('Set header status to "%s"', $http_status_code));
     }
 }
