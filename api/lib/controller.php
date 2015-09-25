@@ -32,6 +32,8 @@ class Controller
             $this->response->set_header(Response::HTTP_NOT_FOUND);
         } catch (Exceptions\UnauthorizedException $e) {
             $this->response->set_header(Response::HTTP_UNAUTHORIZED);
+        } catch (Exceptions\ValidateException $e) {
+            $this->response->set_header(Response::HTTP_BAD_REQUEST);
         }
 
         $this->response->display();

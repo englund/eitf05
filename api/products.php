@@ -1,6 +1,7 @@
 <?php
 require_once 'app.php';
 
+use Lib\Validate;
 use Models\Product;
 
 class Products extends Lib\Controller
@@ -15,7 +16,7 @@ class Products extends Lib\Controller
         $args = $this->request->args;
 
         if (isset($args['id'])) {
-            $id = $args['id']; // TODO: validate
+            $id = Validate::uint($args['id']);
             $product = Product::retrieve($id);
             $this->response->set('product', $product);
         } else {
@@ -33,11 +34,10 @@ class Products extends Lib\Controller
 
         $args = $this->request->args;
 
-        $name = $args['name'];
-        $price = $args['price'];
-        $quantity = $args['quantity'];
-        $image_url = $args['image_url'];
-        // TODO: validate and shit
+        $name = Validate::plaintext($args['name']);
+        $price = Validate::udouble($args['price']);
+        $quantity = Validate::uint($args['quantity']);
+        $image_url = Validate::image_url($args['image_url']);
 
         $product = Product::create($name, $price, $quantity, $image_url);
         $this->response->set_header(Lib\Response::HTTP_CREATED);

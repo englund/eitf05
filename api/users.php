@@ -1,6 +1,7 @@
 <?php
 require_once 'app.php';
 
+use Lib\Validate;
 use Models\User;
 
 class Users extends Lib\Controller
@@ -14,9 +15,8 @@ class Users extends Lib\Controller
     {
         if (!$this->session->is_authenticated()) {
             $args = $this->request->args;
-            $username = $args['username'];
-            $password = $args['password'];
-            // TODO: validate and shit
+            $username = Validate::plaintext($args['username']);
+            $password = Validate::password($args['password']);
 
             $user = User::authenticate($username, $password);
             $this->session->set_user($user);
@@ -35,7 +35,7 @@ class Users extends Lib\Controller
     {
         $args = $this->request->args;
         if (isset($args['username'])) {
-            $username = $args['username']; // TODO: validate
+            $username = Validate::plaintext($args['username']);
             $user = User::retrieve($username);
             $this->response->set('user', $user);
         } else {
@@ -47,10 +47,9 @@ class Users extends Lib\Controller
     public function create()
     {
         $args = $this->request->args;
-        $username = $args['username'];
-        $password = $args['password'];
-        $address = $args['address'];
-        // TODO: validate and shit
+        $username = Validate::plaintext($args['username']);
+        $password = Validate::password($args['password']);
+        $address = Validate::plaintext($args['address']);
 
         $user = User::create($username, $password, $address);
         $this->response->set_header(Lib\Response::HTTP_CREATED);
