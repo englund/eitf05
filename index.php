@@ -45,5 +45,9 @@
     <input type="button" value="Buy" ng-click="store.addToCart(product)">
 </div>
 </div>
+
+<div ng-controller="ServerCtrl as server">
+    <input type="button" value="Get from server" ng-click="get()">
+</div>
 </body>
 </html>

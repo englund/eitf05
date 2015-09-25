@@ -61,6 +61,16 @@
         };
     });
 
+    app.controller('ServerCtrl', ['$scope', '$http', function($scope, $http) {
+        $scope.get = function() {
+            console.log("sending a request");
+            $http.get('/api/products.php').success(function(response) {
+                console.log(response);
+            });
+        };
+    }]);
+
+
     var gems = [{
         name: 'Azurite',
         amount: 1,
@@ -93,4 +103,6 @@
             faces: 6,
             images: []
         }];
+
+
 })();
