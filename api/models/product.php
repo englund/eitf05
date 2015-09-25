@@ -9,24 +9,22 @@ class Product extends \Lib\Model
     public $name;
     public $price;
     public $quantity;
-    public $updated;
     public $created;
 
     public function __construct($name, $price, $quantity,
-        $id = null, $updated = null, $created = null)
+        $id = null, $created = null)
     {
         $this->name = $name;
         $this->price = $price;
         $this->quantity = $quantity;
         $this->id = $id;
-        $this->updated = $updated;
         $this->created = $created;
     }
 
     public static function retrieve($id = null)
     {
         $params = array();
-        $sql = 'SELECT id, name, price, quantity, updated, created FROM products';
+        $sql = 'SELECT id, name, price, quantity, created FROM products';
         if (!is_null($id)) {
             $sql .= ' WHERE id=:id';
             $params['id'] = $id;
@@ -39,7 +37,6 @@ class Product extends \Lib\Model
                 $r['price'],
                 $r['quantity'],
                 $r['id'],
-                $r['updated'],
                 $r['created']
             );
         }
@@ -66,6 +63,6 @@ class Product extends \Lib\Model
         );
 
         $id = Database::update($sql, $params);
-        return new Product($name, $price, $quantity, $id, Database::now(), Database::now());
+        return new Product($name, $price, $quantity, $id, Database::now());
     }
 }

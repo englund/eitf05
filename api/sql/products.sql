@@ -4,5 +4,4 @@ CREATE TABLE IF NOT EXISTS `products` (
   `price` decimal(10,0) NOT NULL,
   `quantity` smallint UNSIGNED NOT NULL,
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
