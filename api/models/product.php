@@ -12,19 +12,20 @@ class Product extends \Lib\Model
     public $created;
 
     public function __construct($name, $price, $quantity,
-        $id = null, $created = null)
+        $id = null, $image_url, $created = null)
     {
         $this->name = $name;
         $this->price = $price;
         $this->quantity = $quantity;
         $this->id = $id;
+        $this->image_url = $image_url;
         $this->created = $created;
     }
 
     public static function retrieve($id = null)
     {
         $params = array();
-        $sql = 'SELECT id, name, price, quantity, created FROM products';
+        $sql = 'SELECT id, name, price, quantity, image_url, created FROM products';
         if (!is_null($id)) {
             $sql .= ' WHERE id=:id';
             $params['id'] = $id;
@@ -37,6 +38,7 @@ class Product extends \Lib\Model
                 $r['price'],
                 $r['quantity'],
                 $r['id'],
+                $r['image_url'],
                 $r['created']
             );
         }
@@ -50,19 +52,20 @@ class Product extends \Lib\Model
         return $products;
     }
 
-    public static function create($name, $price, $quantity)
+    public static function create($name, $price, $quantity, $image_url)
     {
         $sql =
             'INSERT INTO products '.
-            '(name, price, quantity) '.
-            'VALUES (:name, :price, :quantity)';
+            '(name, price, quantity, image_url) '.
+            'VALUES (:name, :price, :quantity, :image_url)';
         $params = array(
             'name' => $name,
             'price' => $price,
             'quantity' => $quantity,
+            'image_url' => $image_url,
         );
 
         $id = Database::update($sql, $params);
-        return new Product($name, $price, $quantity, $id, Database::now());
+        return new Product($name, $price, $quantity, $id, $image_url, Database::now());
     }
 }
