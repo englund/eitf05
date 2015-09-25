@@ -79,8 +79,20 @@ class User extends \Lib\Model
         return $users;
     }
 
+    private static function exist($username)
+    {
+        $sql = 'SELECT 1 FROM users WHERE username=:username';
+        $params = array('username' => $username);
+        $result = Database::select($sql, $params);
+        return (count($result) > 0);
+    }
+
     public static function create($username, $password, $address)
     {
+        if (static::exist($username)) {
+            throw new \Lib\Exceptions\DuplicateException;
+        }
+
         $salt = Security::generate_salt();
         $hashed_password = self::generate_hash($password, $salt);
 
