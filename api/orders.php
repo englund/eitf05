@@ -3,6 +3,7 @@ require_once 'app.php';
 
 use Lib\Validate;
 use Models\Order;
+use Models\Product;
 
 class Orders extends Lib\Controller
 {
@@ -33,6 +34,10 @@ class Orders extends Lib\Controller
 
         $username = $user->username;
         $total = Validate::udouble($args['total']);
+        $products = $args['products'];
+        foreach ($products as $id => $quantity) {
+            Product::decrease_quantity(Validate::uint($id), Validate::uint($quantity));
+        }
 
         $order = Order::create($username, $total);
         $this->response->set_header(Lib\Response::HTTP_CREATED);

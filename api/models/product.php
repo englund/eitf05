@@ -68,4 +68,15 @@ class Product extends \Lib\Model
         $id = Database::update($sql, $params);
         return new Product($name, $price, $quantity, $id, $image_url, Database::now());
     }
+
+
+    public static function decrease_quantity($id, $quantity)
+    {
+        $sql = 'UPDATE products SET quantity=quantity - :quantity WHERE id=:id';
+        $params = array(
+            'id' => $id,
+            'quantity' => $quantity,
+        );
+        return Database::update($sql, $params);
+    }
 }
