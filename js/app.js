@@ -1,16 +1,14 @@
 (function () {
     var app = angular.module('gemStore', []);
 
-    app.controller('StoreController', function ($scope) {
-        this.products = gems;
-        $scope.amount=0;
+    app.controller('StoreController', ['$scope', '$http', function ($scope, $http) {
+        $scope.amount = 0;
         $scope.cart = [];
 
         this.addToCart = function (product) {
             var cart = $scope.cart;
             var found = cart.some(function (el) {
                 if (el.name === product.name) {
-                    console.log()
                     product.amount = 2;
                     return true;
                 }
@@ -21,15 +19,45 @@
             }
             amountOfValues();
         };
-         var amountOfValues = function () {
+        var amountOfValues = function () {
             var count = 0;
 
             for (var items in $scope.cart) {
                 count += items.amount;
             }
-             $scope.ItemAmount = count;
+            $scope.ItemAmount = count;
+        };
+        $http.get('/api/products.php').success(function (response) {
+            $scope.products = response.products;
+        });
+
+
+        $scope.signUp = function(user){
+            console.log(JSON.stringify(user));
+            $http({
+                url: '/api/users.php?action=create',
+                method: "POST",
+                headers:{'Content-Type':"application/json"},
+                data:JSON.stringify(user)
+            }).success(function(data, status, headers, config) {
+                $scope.data = data;
+            }).error(function(data, status, headers, config) {
+                $scope.status = status;
+            });
         }
-    });
+        $scope.login = function(user){
+            $http({
+                url: '/api/users.php?action=login',
+                method: "POST",
+                headers:{'Content-Type':"application/json"},
+                data:JSON.stringify(user)
+            }).success(function(data, status, headers, config) {
+                $scope.data = data;
+            }).error(function(data, status, headers, config) {
+                $scope.status = status;
+            });
+        };
+    }]);
 
     app.controller("TabController", function () {
         this.tab = 1;
@@ -60,49 +88,6 @@
             this.review = {};
         };
     });
-
-    app.controller('ServerCtrl', ['$scope', '$http', function($scope, $http) {
-        $scope.get = function() {
-            console.log("sending a request");
-            $http.get('/api/products.php').success(function(response) {
-                console.log(response);
-            });
-        };
-    }]);
-
-
-    var gems = [{
-        name: 'Azurite',
-        amount: 1,
-        description: "Some gems have hidden qualities beyond their luster, beyond their shine... Azurite is one of those gems.",
-        shine: 8,
-        price: 110.50,
-        rarity: 7,
-        color: '#CCC',
-        faces: 14,
-        images: []
-    }, {
-        name: 'Bloodstone',
-        amount: 1,
-        description: "Origin of the Bloodstone is unknown, hence its low value. It has a very high shine and 12 sides, however.",
-        shine: 9,
-        price: 22.90,
-        rarity: 6,
-        color: '#EEE',
-        faces: 12,
-        images: []
-    },
-        {
-            name: 'Zircon',
-            amount: 1,
-            description: "Zircon is our most coveted and sought after gem. You will pay much to be the proud owner of this gorgeous and high shine gem.",
-            shine: 70,
-            price: 1100,
-            rarity: 2,
-            color: '#000',
-            faces: 6,
-            images: []
-        }];
 
 
 })();
