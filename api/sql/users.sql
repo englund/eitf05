@@ -4,4 +4,4 @@ CREATE TABLE IF NOT EXISTS `users` (
   `salt` varchar(8) NOT NULL,
   `address` varchar(255) DEFAULT NULL,
   `is_admin` tinyint UNSIGNED NOT NULL DEFAULT 0
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

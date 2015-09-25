@@ -67,7 +67,7 @@ class Database
     private static function get_connection()
     {
         if (is_null(self::$db)) {
-            self::$db = new \PDO(sprintf('%s:host=%s;dbname=%s;',
+            self::$db = new \PDO(sprintf('%s:host=%s;dbname=%s;charset=utf8',
                 DB_TYPE, DB_HOST, DB_NAME), DB_USER, DB_PASS);
         }
         return self::$db;
