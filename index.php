@@ -48,9 +48,8 @@
                         </table>
                     </li>
                 </ul>
-
-
             </div>
+            <input type="button" class="btn-block btn-success" ng-click="store.buy()" value="Buy">
         </div>
     </div>
     <div class="col-sm-9 col-lg-9 col-md-9 scrollit">

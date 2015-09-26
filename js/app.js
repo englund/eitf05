@@ -5,8 +5,10 @@
         $scope.amount = 0;
         $scope.cart = [];
 
-        this.addToCart = function (product,amount) {
+        this.addToCart = function (product,buy) {
             var cart = $scope.cart;
+            var amount = buy.amount;
+            buy.amount="";
             var found = cart.some(function (el) {
                 if (el.name === product.name) {
                     product.amount += amount;
@@ -20,6 +22,7 @@
             }
             calculatePrice();
         };
+
         var calculatePrice = function () {
             var cart = $scope.cart;
             var count = 0;
@@ -33,10 +36,21 @@
             $scope.chunkedProducts = chunk(response.products, 3);
         });
 
-
+        $scope.buy= function(){
+            var cart = $scope.cart;
+            $http({
+                url: '/api/users.php?action=create',
+                method: "POST",
+                headers:{'Content-Type':"application/json"},
+                data:JSON.stringify(cart)
+            }).success(function(data, status, headers, config) {
+                $scope.data = data;
+            }).error(function(data, status, headers, config) {
+                $scope.status = status;
+            });
+        };
         $scope.signUp = function(user){
             $scope.username = user.username;
-            console.log(JSON.stringify(user));
             $http({
                 url: '/api/users.php?action=create',
                 method: "POST",
@@ -47,7 +61,7 @@
             }).error(function(data, status, headers, config) {
                 $scope.status = status;
             });
-        }
+        };
         $scope.login = function(user){
             $http({
                 url: '/api/users.php?action=login',
