@@ -1,0 +1,30 @@
+
+    <div class="row" ng-repeat="rows in chunkedProducts">
+
+        <div class="col-sm-4 col-lg-4 col-md-4" ng-repeat="product in rows">
+            <div class="thumbnail">
+                <img ng-src="{{product.image_url}}" width="304" height="236">
+
+                <div class="caption">
+                    <h4 class="pull-right">{{product.price | currency}}</h4>
+                    <h4>{{product.name}}</h4>
+
+                    <div class="row">
+                        <div class="col-sm-6 col-lg-6 col-md-6">
+                            <label for="amount">Amount kg</label>
+                            <input type="number" id="amount" class="form-control" ng-model="buy.amount">
+                        </div>
+                        <div class="col-sm-6 col-lg-6 col-md-6">
+                            <label for="amount">Add to cart</label>
+                            <input type="button" class="btn-block btn-success" ng-click="store.addToCart(product,buy.amount)" value="buy">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+

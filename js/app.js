@@ -5,34 +5,37 @@
         $scope.amount = 0;
         $scope.cart = [];
 
-        this.addToCart = function (product) {
+        this.addToCart = function (product,amount) {
             var cart = $scope.cart;
             var found = cart.some(function (el) {
                 if (el.name === product.name) {
-                    product.amount = 2;
+                    product.amount += amount;
                     return true;
                 }
                 return false;
             });
             if (!found) {
+                product.amount = amount;
                 $scope.cart.push(product);
             }
-            amountOfValues();
+            calculatePrice();
         };
-        var amountOfValues = function () {
+        var calculatePrice = function () {
+            var cart = $scope.cart;
             var count = 0;
-
-            for (var items in $scope.cart) {
-                count += items.amount;
+            for(var j = 0; j < cart.length; j++){
+                count+= cart[j].amount* cart[j].price;
             }
-            $scope.ItemAmount = count;
+            $scope.totalPrice = count;
         };
         $http.get('/api/products.php').success(function (response) {
             $scope.products = response.products;
+            $scope.chunkedProducts = chunk(response.products, 3);
         });
 
 
         $scope.signUp = function(user){
+            $scope.username = user.username;
             console.log(JSON.stringify(user));
             $http({
                 url: '/api/users.php?action=create',
@@ -71,13 +74,6 @@
         };
     });
 
-    app.controller('GalleryController', function () {
-        this.current = 0;
-
-        this.setCurrent = function (imageNumber) {
-            this.current = imageNumber || 0;
-        };
-    });
 
     app.controller("ReviewController", function () {
 
@@ -88,6 +84,26 @@
             this.review = {};
         };
     });
+
+    app.directive("productInformation", function() {
+        return {
+            restrict: 'E',
+            templateUrl: "html/product-layout.html"
+        };
+    });
+    app.directive("singUpModal", function() {
+        return {
+            restrict: 'E',
+            templateUrl: "html/sign-up-modal.html"
+        };
+    });
+    app.directive("loginModal", function() {
+        return {
+            restrict: 'E',
+            templateUrl: "html/login-modal.html"
+        };
+    });
+
 
 
 })();
