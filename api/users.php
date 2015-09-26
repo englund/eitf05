@@ -11,37 +11,24 @@ class Users extends Lib\Controller
         $this->retrieve();
     }
 
-    public function login()
+    public function authenticate()
     {
-        if (!$this->session->is_authenticated()) {
-            $args = $this->request->args;
-            $username = Validate::plaintext($args['username']);
-            $password = Validate::password($args['password']);
-
-            $user = User::authenticate($username, $password);
-            $this->session->set_user($user);
-        } else {
-            $user = $this->session->get_user();
+        if (is_null($this->request->username) || is_null($this->request->password)) {
+            throw new Lib\Exceptions\UnauthorizedException();
         }
+
+        $username = Validate::plaintext($this->request->username);
+        $password = Validate::password($this->request->password);
+
+        $user = User::authenticate($username, $password);
         $this->response->set('user', $user);
     }
 
-    public function logout()
-    {
-        $this->session->destroy();
-    }
-
-    public function retrieve()
+    public function remove_token()
     {
         $args = $this->request->args;
-        if (isset($args['username'])) {
-            $username = Validate::plaintext($args['username']);
-            $user = User::retrieve($username);
-            $this->response->set('user', $user);
-        } else {
-            $users = User::retrieve();
-            $this->response->set('users', $users);
-        }
+        $user = User::retrieve_by_token(Validate::token($args['token']));
+        $user->remove_token();
     }
 
     public function create()

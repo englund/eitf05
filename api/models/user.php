@@ -9,23 +9,78 @@ class User extends \Lib\Model
 {
     public $username;
     public $address;
+    public $token;
+    public $token_expiration;
 
     private $password;
     private $salt;
     private $is_admin;
 
-    public function __construct($username, $address, $password = null, $salt = null, $is_admin = 0)
+    public function __construct(
+        $username,
+        $address,
+        $password = null,
+        $salt = null,
+        $is_admin = 0,
+        $token = null,
+        $token_expiration = null)
     {
         $this->username = $username;
         $this->address = $address;
         $this->password = $password;
         $this->salt = $salt;
         $this->is_admin = $is_admin;
+        $this->token = $token;
+        $this->token_expiration = $token_expiration;
     }
 
     public function is_admin()
     {
         return $this->is_admin;
+    }
+
+    public function create_token()
+    {
+        $expiration = date('Y-m-d H:i:s', strtotime('+15 minutes'));
+        $token = hash('sha256', sprintf('%s||%s||%s', $this->username, Security::generate_salt(), time()));
+        try {
+            $this->save_token($token, $expiration);
+            $this->token = $token;
+            $this->token_expiration = $expiration;
+        } catch (\Lib\Exceptions\DatabaseException $e) {
+            throw new \Lib\Exceptions\UnauthorizedException();
+        }
+    }
+
+    public function save_token($token, $expiration)
+    {
+        $sql =
+            'UPDATE users '.
+            'SET token=:token, token_expiration=:expiration '.
+            'WHERE username=:username';
+        $params = array(
+            'username' => $this->username,
+            'token' => $token,
+            'expiration' => $expiration,
+        );
+        Database::update($sql, $params);
+    }
+
+    public function remove_token()
+    {
+        $sql =
+            'UPDATE users '.
+            'SET token=:token, token_expiration=:expiration '.
+            'WHERE username=:username';
+        $params = array(
+            'username' => $this->username,
+            'token' => null,
+            'expiration' => null,
+        );
+        Database::update($sql, $params);
+
+        $this->token = null;
+        $this->token_expiration = null;
     }
 
     public static function authenticate($username, $password)
@@ -46,16 +101,31 @@ class User extends \Lib\Model
 
             throw new \Lib\Exceptions\UnauthorizedException();
         }
+
+        $user->create_token();
+
         return $user;
     }
 
-    public static function retrieve($username = null)
+    public static function retrieve_by_token($token)
+    {
+        return static::retrieve(null, $token);
+    }
+
+    public static function retrieve($username = null, $token = null)
     {
         $params = array();
-        $sql = 'SELECT username, address, password, salt, is_admin FROM users';
+        $sql =
+            'SELECT username, address, password, salt, is_admin, '.
+            'token, token_expiration '.
+            'FROM users';
         if (!is_null($username)) {
             $sql .= ' WHERE username=:username';
             $params['username'] = $username;
+        } else if (!is_null($token)) {
+            $sql .= ' WHERE token=:token AND token_expiration>=:now';
+            $params['token'] = $token;
+            $params['now'] = Database::now();
         }
         $result = Database::select($sql, $params);
         $users = array();
@@ -66,7 +136,9 @@ class User extends \Lib\Model
                 $r['address'],
                 $r['password'],
                 $r['salt'],
-                $is_admin
+                $is_admin,
+                $r['token'],
+                $r['token_expiration']
             );
         }
 
@@ -76,6 +148,14 @@ class User extends \Lib\Model
             }
             return $users[0];
         }
+
+        if (!is_null($token)) {
+            if (empty($users)) {
+                throw new \Lib\Exceptions\UnauthorizedException();
+            }
+            return $users[0];
+        }
+
         return $users;
     }
 

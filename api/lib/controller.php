@@ -3,13 +3,11 @@ namespace Lib;
 
 use Lib\Request;
 use Lib\Response;
-use Lib\Session;
 
 class Controller
 {
     protected $request;
     protected $response;
-    protected $session;
 
     public function __construct()
     {
@@ -24,7 +22,6 @@ class Controller
 
         $this->request = new Request($method, $content_type, $params);
         $this->response = new Response();
-        $this->session = new Session();
 
         try {
             $this->handleRequest();

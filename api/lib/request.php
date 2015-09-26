@@ -6,6 +6,8 @@ class Request
     public $content_type;
     public $action;
     public $args;
+    public $username;
+    public $password;
 
     public function __construct($method, $content_type, $params)
     {
@@ -17,6 +19,11 @@ class Request
             unset($params['action']);
         }
         $this->args = array_merge($params, $this->get_request_data());
+
+        if (isset($_SERVER['PHP_AUTH_USER'])) {
+            $this->username = $_SERVER['PHP_AUTH_USER'];
+            $this->password = $_SERVER['PHP_AUTH_PW'];
+        }
 
         Log::debug('Request',
             sprintf('Data: %s', var_export(Log::filter($this->args), true)));
