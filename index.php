@@ -29,7 +29,7 @@
 <div class="container">
 <div class="row">
     <div class="col-sm-3 col-lg-3 col-md-3">
-        <div class="panel panel-default ">
+        <div class="panel panel-default nav nav-stacked affix" id="cart">
             <div class="panel-heading">Cart <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
                <p class ="text-left">Price: {{totalPrice| currency}}</p>
             </div>

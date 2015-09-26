@@ -36,10 +36,10 @@
             $scope.chunkedProducts = chunk(response.products, 3);
         });
 
-        $scope.buy= function(){
+        this.buy= function(){
             var cart = $scope.cart;
             $http({
-                url: '/api/users.php?action=create',
+                url: '/api/products.php?action=create',
                 method: "POST",
                 headers:{'Content-Type':"application/json"},
                 data:JSON.stringify(cart)
