@@ -13,12 +13,9 @@ class Users extends Lib\Controller
 
     public function authenticate()
     {
-        if (is_null($this->request->username) || is_null($this->request->password)) {
-            throw new Lib\Exceptions\UnauthorizedException();
-        }
-
-        $username = Validate::plaintext($this->request->username);
-        $password = Validate::password($this->request->password);
+        $args = $this->request->args;
+        $username = Validate::plaintext($args['username']);
+        $password = Validate::password($args['password']);
 
         $user = User::authenticate($username, $password);
         $this->response->set('user', $user);
