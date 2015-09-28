@@ -4,6 +4,7 @@ require_once 'app.php';
 use Lib\Validate;
 use Models\Order;
 use Models\Product;
+use Models\User;
 
 class Orders extends Lib\Controller
 {
@@ -28,9 +29,8 @@ class Orders extends Lib\Controller
 
     public function create()
     {
-        $user = $this->session->get_user();
-
         $args = $this->request->args;
+        $user = User::retrieve_by_token(Validate::token($args['token']));
 
         $username = $user->username;
         $total = Validate::udouble($args['total']);

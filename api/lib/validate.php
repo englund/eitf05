@@ -65,4 +65,16 @@ class Validate
         }
         throw new ValidateException();
     }
+
+    public static function token($data)
+    {
+        if (!is_null($data) && !empty($data) && strlen($data) === 64) {
+            $valid = '/^[a-f0-9]+$/';
+            $result = preg_match($valid, $data);
+            if ($result === 1) {
+                return $data;
+            }
+        }
+        throw new ValidateException();
+    }
 }
