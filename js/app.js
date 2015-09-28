@@ -64,12 +64,20 @@
         };
         $scope.login = function(user){
             $http({
-                url: '/api/users.php?action=login',
+                url: '/api/users.php?action=authenticate',
                 method: "POST",
                 headers:{'Content-Type':"application/json"},
                 data:JSON.stringify(user)
             }).success(function(data, status, headers, config) {
-                $scope.data = data;
+                $scope.user = data.user;
+
+                /**
+                 * Save to sessionStorage
+                 *
+                 * To retrieve this information:
+                 * $user = angular.fromJson(sessionStorage.user);
+                 */
+                sessionStorage.user = angular.toJson(data.user);
             }).error(function(data, status, headers, config) {
                 $scope.status = status;
             });
