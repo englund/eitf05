@@ -1,0 +1,27 @@
+<div class="panel panel-default nav nav-stacked affix" id="cart">
+    <div class="panel-heading"><b>Cart</b><span class="glyphicon glyphicon-shopping-cart"
+                                          aria-hidden="true"></span>
+    </div>
+
+    <div class="panel-body">
+        <b class="text-center">Total Price: {{totalPrice| currency}} </b>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <td>Name</td>
+                        <td>Amount</td>
+                        <td>Price</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="product in cart">
+                        <td>{{product.name}}</td>
+                        <td>{{product.amount}}kg</td>
+                        <td>{{product.price*product.amount| currency}}</td>
+                    </tr>
+                    </tbody>
+
+                </table>
+    </div>
+    <input type="button" class="btn-block btn-success" ng-click="store.buy()" value="Buy">
+</div>

@@ -4,6 +4,7 @@
     app.controller('StoreController', ['$scope', '$http', function ($scope, $http) {
         $scope.amount = 0;
         $scope.cart = [];
+        $scope.loggedIn = false;
 
         this.addToCart = function (product,buy) {
             var cart = $scope.cart;
@@ -57,6 +58,7 @@
                 headers:{'Content-Type':"application/json"},
                 data:JSON.stringify(user)
             }).success(function(data, status, headers, config) {
+                $("#loginText").append("User has been added");
                 $scope.data = data;
             }).error(function(data, status, headers, config) {
                 $scope.status = status;
@@ -78,6 +80,7 @@
                  * $user = angular.fromJson(sessionStorage.user);
                  */
                 sessionStorage.user = angular.toJson(data.user);
+                $scope.loggedIn=true;
             }).error(function(data, status, headers, config) {
                 $scope.status = status;
             });
@@ -123,6 +126,19 @@
         return {
             restrict: 'E',
             templateUrl: "html/login-modal.html"
+        };
+    });
+
+    app.directive("navBar", function() {
+        return {
+            restrict: 'E',
+            templateUrl: "html/nav-bar.html"
+        };
+    });
+    app.directive("cart", function() {
+        return {
+            restrict: 'E',
+            templateUrl: "html/cart.html"
         };
     });
 

@@ -4,3 +4,38 @@
     top:70px;
     width:228px;
 }
+.thumbnail img{
+    width:304px;
+    height:236px;
+}
+#navBar{
+    background-color: rgb(92, 184, 92);
+
+}
+#navBar b{
+    color: white;
+
+}
+.modal-header{
+    background-color: rgb(92, 184, 92);
+    color: white;
+}
+.col-centered{
+    float: none;
+    margin: 0 auto;
+}
+.panel-heading{
+    background-color: rgb(92, 184, 92);
+    color: white;
+}
+.panel > .panel-heading {
+    background-image: none;
+    background-color: rgb(92, 184, 92);;
+    color: white;
+
+}
+.center {
+    float: none;
+    margin-left: auto;
+    margin-right: auto;
+}
