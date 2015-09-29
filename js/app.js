@@ -4,7 +4,14 @@
     app.controller('StoreController', ['$scope', '$http', function ($scope, $http) {
         $scope.amount = 0;
         $scope.cart = [];
+
         $scope.loggedIn = false;
+        var user = getFromSession('user');
+        var now = new Date();
+        var expiration = new Date(user.token_expiration);
+        if (user != undefined && expiration > now) {
+          $scope.loggedIn = true;
+        }
 
         this.addToCart = function (product,buy) {
             var cart = $scope.cart;
@@ -77,9 +84,9 @@
                  * Save to sessionStorage
                  *
                  * To retrieve this information:
-                 * $user = angular.fromJson(sessionStorage.user);
+                 * $user = getFromSession('user');
                  */
-                sessionStorage.user = angular.toJson(data.user);
+                saveToSession('user', data.user);
                 $scope.loggedIn=true;
             }).error(function(data, status, headers, config) {
                 $scope.status = status;

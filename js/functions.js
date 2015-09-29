@@ -7,3 +7,11 @@ function chunk(arr, size) {
     }
     return newArr;
 }
+
+function saveToSession(key, value) {
+    sessionStorage[key] = angular.toJson(value);
+}
+
+function getFromSession(key) {
+  return angular.fromJson(sessionStorage[key]);
+}
