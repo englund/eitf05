@@ -8,9 +8,11 @@
         $scope.loggedIn = false;
         var user = getFromSession('user');
         var now = new Date();
-        var expiration = new Date(user.token_expiration);
-        if (user != undefined && expiration > now) {
-          $scope.loggedIn = true;
+        if (user != undefined) {
+          var expiration = new Date(user.token_expiration);
+          if (expiration > now) {
+            $scope.loggedIn = true;
+          }
         }
 
         this.addToCart = function (product,buy) {
