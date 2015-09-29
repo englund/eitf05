@@ -92,6 +92,21 @@
                 $scope.status = status;
             });
         };
+
+        $scope.logout = function(){
+            var user = getFromSession('user');
+            $http({
+                url: '/api/users.php?action=remove_token',
+                method: "POST",
+                headers:{'Content-Type':"application/json"},
+                data:JSON.stringify({'token': user.token})
+            }).success(function(data, status, headers, config) {
+                removeFromSession('user');
+                $scope.loggedIn=false;
+            }).error(function(data, status, headers, config) {
+                $scope.status = status;
+            });
+        };
     }]);
 
     app.controller("TabController", function () {

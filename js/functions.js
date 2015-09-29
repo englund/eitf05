@@ -15,3 +15,7 @@ function saveToSession(key, value) {
 function getFromSession(key) {
   return angular.fromJson(sessionStorage[key]);
 }
+
+function removeFromSession(key) {
+  sessionStorage.removeItem(key);
+}
