@@ -3,11 +3,10 @@
 
     app.controller('StoreController', ['$scope', '$http', function ($scope, $http) {
         $scope.amount = 0;
-        $scope.cart = [];
-
         $scope.loggedIn = false;
         var user = getFromSession('user');
         console.log(user);
+        creatCart();
         var now = new Date();
         if (user != undefined) {
           var expiration = new Date(user.token_expiration);
@@ -16,12 +15,16 @@
             $scope.loggedIn = true;
           }
         }
-
+        function creatCart(){
+            $scope.cart = {};
+            $scope.cart.products = [];
+            $scope.cart.totalPrice = 0;
+        };
         this.addToCart = function (product,buy) {
             var cart = $scope.cart;
             var amount = buy.amount;
             buy.amount="";
-            var found = cart.some(function (el) {
+            var found = cart.products.some(function (el) {
                 if (el.name === product.name) {
                     product.amount += amount;
                     return true;
@@ -30,18 +33,18 @@
             });
             if (!found) {
                 product.amount = amount;
-                $scope.cart.push(product);
+                $scope.cart.products.push(product);
             }
             calculatePrice();
         };
 
         var calculatePrice = function () {
-            var cart = $scope.cart;
+            var products = $scope.cart.products;
             var count = 0;
-            for(var j = 0; j < cart.length; j++){
-                count+= cart[j].amount* cart[j].price;
+            for(var j = 0; j < products.length; j++){
+                count+= products[j].amount* products[j].price;
             }
-            $scope.totalPrice = count;
+            $scope.cart.totalPrice = count;
         };
         $http.get('/api/products.php').success(function (response) {
             $scope.products = response.products;
@@ -49,7 +52,7 @@
         });
 
         this.buy= function(){
-            var cart = $scope.cart;
+            var cart = $scope.cart.products;
             var products ={};
             for(var j = 0; j < cart.length; j++){
                 products[cart[j].id]=cart[j].amount;
@@ -64,7 +67,7 @@
                 headers:{'Content-Type':"application/json"},
                 data:JSON.stringify(jsonToSend)
             }).success(function(data, status, headers, config) {
-                $scope.cart={};
+                creatCart();
             }).error(function(data, status, headers, config) {
                 $scope.status = status;
             });

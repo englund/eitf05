@@ -7,15 +7,21 @@
 <body>
 <div class="container">
     <div class="row">
-        <h5>Frind Search</h5>
-        <form role="form">
+        <h5>Find Your Address</h5>
+        <form role="form" action="hackingShow.php">
             <div class="form-group">
                 <label for="username">Username</label>
-                <input type="text" id="username" class="form-control">
+                <input type="text" id="username" name="username" class="form-control">
+                <label for="password">Password</label>
+                <input type="text" id="password" name="password" class="form-control">
             </div>
             <button type="submit" class="btn btn-success">Go</button>
         </form>
     </div>
 </div>
+<script>
+  user = getFromSession('user');
+  $("#username").val(user.name);
+</script>
 </body>
 </html>

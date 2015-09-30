@@ -4,7 +4,7 @@
     </div>
 
     <div class="panel-body">
-        <b class="text-center">Total Price: {{totalPrice| currency}} </b>
+        <b class="text-center">Total Price: {{cart.totalPrice| currency}} </b>
                 <table class="table table-striped">
                     <thead>
                     <tr>
@@ -14,7 +14,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="product in cart">
+                    <tr ng-repeat="product in cart.products">
                         <td>{{product.name}}</td>
                         <td>{{product.amount}}kg</td>
                         <td>{{product.price*product.amount| currency}}</td>

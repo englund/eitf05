@@ -15,6 +15,7 @@
 <body ng-controller="StoreController as store">
 
 <nav-bar></nav-bar>
+<a href ="hackingWeb/hacking.html">Hacking Site</a>
 <div class="container">
     <div class="row">
         <div class="col-sm-3 col-lg-3 col-md-3">
