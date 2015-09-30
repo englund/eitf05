@@ -64,7 +64,7 @@
                 headers:{'Content-Type':"application/json"},
                 data:JSON.stringify(jsonToSend)
             }).success(function(data, status, headers, config) {
-                $scope.data = data;
+                $scope.cart={};
             }).error(function(data, status, headers, config) {
                 $scope.status = status;
             });
@@ -90,7 +90,7 @@
                 headers:{'Content-Type':"application/json"},
                 data:JSON.stringify(user)
             }).success(function(data, status, headers, config) {
-                $scope.user = data.user;
+                $scope.loggedInUser = data.user;
 
                 /**
                  * Save to sessionStorage
