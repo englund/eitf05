@@ -7,10 +7,12 @@
 
         $scope.loggedIn = false;
         var user = getFromSession('user');
+        console.log(user);
         var now = new Date();
         if (user != undefined) {
           var expiration = new Date(user.token_expiration);
           if (expiration > now) {
+            $scope.loggedInUser=user;
             $scope.loggedIn = true;
           }
         }
@@ -48,11 +50,19 @@
 
         this.buy= function(){
             var cart = $scope.cart;
+            var products ={};
+            for(var j = 0; j < cart.length; j++){
+                products[cart[j].id]=cart[j].amount;
+            }
+            jsonToSend={};
+            jsonToSend.total = cart.length;
+            jsonToSend.products=products;
+            jsonToSend.token=user.token;
             $http({
-                url: '/api/products.php?action=create',
+                url: '/api/orders.php?action=create',
                 method: "POST",
                 headers:{'Content-Type':"application/json"},
-                data:JSON.stringify(cart)
+                data:JSON.stringify(jsonToSend)
             }).success(function(data, status, headers, config) {
                 $scope.data = data;
             }).error(function(data, status, headers, config) {
@@ -86,9 +96,9 @@
                  * Save to sessionStorage
                  *
                  * To retrieve this information:
-                 * $user = getFromSession('user');
+                 * $user = angular.fromJson(sessionStorage.user);
                  */
-                saveToSession('user', data.user);
+                sessionStorage.user = angular.toJson(data.user);
                 $scope.loggedIn=true;
             }).error(function(data, status, headers, config) {
                 $scope.status = status;
@@ -163,6 +173,12 @@
         return {
             restrict: 'E',
             templateUrl: "html/cart.html"
+        };
+    });
+    app.directive("userInfoModal", function() {
+        return {
+            restrict: 'E',
+            templateUrl: "html/user-info-modal.html"
         };
     });
 

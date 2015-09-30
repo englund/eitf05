@@ -2,9 +2,9 @@
 <html ng-app="gemStore">
 <head>
     <meta charset="utf-8">
-    <link href="bootstrap.min.css" rel="stylesheet" type="text/css">
-    <script type="text/javascript" src="jquery.min.js"></script>
-    <script type="text/javascript" src="bootstrap.min.js"></script>
+    <link href="libraries/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="libraries/jquery.min.js"></script>
+    <script type="text/javascript" src="libraries/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <script type="text/javascript" src="js/angular.min.js"></script>
     <script type="text/javascript" src="js/app.js"></script>
@@ -26,7 +26,7 @@
     </div>
 </div>
 <sing-up-modal></sing-up-modal>
-<login-modal></login-modal>
+<user-info-modal></user-info-modal>
 
 
 </body>
