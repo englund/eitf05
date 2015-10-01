@@ -12,9 +12,9 @@ class User extends \Lib\Model
     public $token;
     public $token_expiration;
 
-    private $password;
-    private $salt;
-    private $is_admin;
+    protected $password;
+    protected $salt;
+    protected $is_admin;
 
     public function __construct(
         $username,
@@ -191,7 +191,7 @@ class User extends \Lib\Model
         return new User($username, $address);
     }
 
-    private static function generate_hash($password, $salt)
+    protected static function generate_hash($password, $salt)
     {
         return Security::hash(sprintf('%s||%s', $password, $salt));
     }

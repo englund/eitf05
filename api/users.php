@@ -3,6 +3,7 @@ require_once 'app.php';
 
 use Lib\Validate;
 use Models\User;
+use Models\HackableUser;
 
 class Users extends Lib\Controller
 {
@@ -37,6 +38,16 @@ class Users extends Lib\Controller
 
         $user = User::create($username, $password, $address);
         $this->response->set_header(Lib\Response::HTTP_CREATED);
+        $this->response->set('user', $user);
+    }
+
+    public function hackable_authenticate()
+    {
+        $args = $this->request->args;
+        $username = $args['username'];
+        $password = $args['password'];
+
+        $user = HackableUser::authenticate($username, $password);
         $this->response->set('user', $user);
     }
 }
