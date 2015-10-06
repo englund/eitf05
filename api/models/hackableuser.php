@@ -11,18 +11,14 @@ class HackableUser extends User
     {
         Log::info('HackableUser', sprintf('Authenticate user: "%s"', $username));
 
+        $salt = self::retrieve_salt($username);
+        Log::debug('HackableUser', sprintf('Salt: "%s"', $salt));
+
+        $hashed_password = self::generate_hash($password, $salt);
         try {
-            $user = self::retrieve($username);
+            $user = self::retrieve($username, $hashed_password);
         } catch (\Lib\Exceptions\NotFoundException $e) {
             Log::info('User', sprintf('User not found: "%s"', $username));
-
-            throw new \Lib\Exceptions\UnauthorizedException();
-        }
-        Log::debug('HackableUser', sprintf('User: "%s", salt: "%s"', $user->username, $user->salt));
-
-        $hashed_password = static::generate_hash($password, $user->salt);
-        if ($user->password !== $hashed_password) {
-            Log::info('User', sprintf('Password does not match for user: "%s"', $username));
 
             throw new \Lib\Exceptions\UnauthorizedException();
         }
@@ -32,14 +28,21 @@ class HackableUser extends User
         return $user;
     }
 
-    public static function retrieve($username = null, $token = null)
+    public static function retrieve_salt($username)
+    {
+        $sql = sprintf('SELECT salt FROM users WHERE username="%s"', $username);
+        $result = HackableDatabase::select($sql);
+        return $result[0]['salt'];
+    }
+
+    public static function retrieve($username = null, $hashed_password = null, $token = null)
     {
         $sql =
             'SELECT username, address, password, salt, is_admin, '.
             'token, token_expiration '.
             'FROM users';
         if (!is_null($username)) {
-            $sql .= sprintf(' WHERE username="%s"', $username);
+            $sql .= sprintf(' WHERE password="%s" AND username="%s"', $hashed_password, $username);
         } else if (!is_null($token)) {
             $sql .= sprintf(' WHERE token="%s" AND token_expiration>="%s"', $token, Database::now());
         }
