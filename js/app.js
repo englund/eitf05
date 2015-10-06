@@ -62,6 +62,7 @@
             jsonToSend.total = cart.length;
             jsonToSend.products=products;
             jsonToSend.token=user.token;
+            console.log(JSON.stringify(jsonToSend));
             $http({
                 url: '/api/orders.php?action=create',
                 method: "POST",
