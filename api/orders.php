@@ -43,6 +43,24 @@ class Orders extends Lib\Controller
         $this->response->set_header(Lib\Response::HTTP_CREATED);
         $this->response->set('order', $order);
     }
+
+    public function hackable_create()
+    {
+        $args = $this->request->args;
+        $token = $_COOKIE['user_token'];
+        $user = User::retrieve_by_token(Validate::token($token));
+
+        $username = $user->username;
+        $total = Validate::udouble($args['total']);
+        $products = $args['products'];
+        foreach ($products as $id => $quantity) {
+            Product::decrease_quantity(Validate::uint($id), Validate::uint($quantity));
+        }
+
+        $order = Order::create($username, $total);
+        $this->response->set_header(Lib\Response::HTTP_CREATED);
+        $this->response->set('order', $order);
+    }
 }
 
 $controller = new Orders();
