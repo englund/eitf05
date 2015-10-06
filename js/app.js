@@ -118,13 +118,10 @@
             }).success(function(data, status, headers, config) {
                 $scope.loggedInUser = data.user;
 
-                /**
-                 * Save to sessionStorage
-                 *
-                 * To retrieve this information:
-                 * $user = angular.fromJson(sessionStorage.user);
-                 */
-                sessionStorage.user = angular.toJson(data.user);
+                var json_user = angular.toJson(data.user);
+                sessionStorage.user = json_user;
+                $.cookie('user_token', data.user.token);
+
                 $scope.loggedIn=true;
             }).error(function(data, status, headers, config) {
                 $scope.status = status;

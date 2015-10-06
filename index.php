@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <link href="libraries/bootstrap.min.css" rel="stylesheet" type="text/css">
     <script type="text/javascript" src="libraries/jquery.min.js"></script>
+    <script type="text/javascript" src="libraries/jquery.cookie.js"></script>
     <script type="text/javascript" src="libraries/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <script type="text/javascript" src="js/angular.min.js"></script>
