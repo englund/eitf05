@@ -9,6 +9,7 @@
     <script type="text/javascript" src="js/angular.min.js"></script>
     <script type="text/javascript" src="js/app.js"></script>
     <script type="text/javascript" src="js/functions.js"></script>
+    <script type="text/javascript" src="js/directives.js"></script>
     <link href="css/store.css" rel="stylesheet" type="text/css">
 </head>
 

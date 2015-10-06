@@ -1,5 +1,5 @@
 (function () {
-    var app = angular.module('gemStore', []);
+    var app = angular.module('gemStore', ['store-directives']);
 
     app.controller('StoreController', ['$scope', '$http', function ($scope, $http) {
         $scope.amount = 0;
@@ -46,6 +46,7 @@
             }
             $scope.cart.totalPrice = count;
         };
+
         $http.get('/api/products.php').success(function (response) {
             $scope.products = response.products;
             $scope.chunkedProducts = chunk(response.products, 3);
@@ -108,6 +109,27 @@
                 $scope.status = status;
             });
         };
+        $scope.loginHacking = function(user){
+            $http({
+                url: '/api/users.php?action=hackable_authenticate',
+                method: "POST",
+                headers:{'Content-Type':"application/json"},
+                data:JSON.stringify(user)
+            }).success(function(data, status, headers, config) {
+                $scope.loggedInUser = data.user;
+
+                /**
+                 * Save to sessionStorage
+                 *
+                 * To retrieve this information:
+                 * $user = angular.fromJson(sessionStorage.user);
+                 */
+                sessionStorage.user = angular.toJson(data.user);
+                $scope.loggedIn=true;
+            }).error(function(data, status, headers, config) {
+                $scope.status = status;
+            });
+        };
 
         $scope.logout = function(){
             var user = getFromSession('user');
@@ -124,68 +146,5 @@
             });
         };
     }]);
-
-    app.controller("TabController", function () {
-        this.tab = 1;
-
-        this.isSet = function (checkTab) {
-            return this.tab === checkTab;
-        };
-
-        this.setTab = function (setTab) {
-            this.tab = setTab;
-        };
-    });
-
-
-    app.controller("ReviewController", function () {
-
-        this.review = {};
-
-        this.addReview = function (product) {
-            product.reviews.push(this.review);
-            this.review = {};
-        };
-    });
-
-    app.directive("productInformation", function() {
-        return {
-            restrict: 'E',
-            templateUrl: "html/product-layout.html"
-        };
-    });
-    app.directive("singUpModal", function() {
-        return {
-            restrict: 'E',
-            templateUrl: "html/sign-up-modal.html"
-        };
-    });
-    app.directive("loginModal", function() {
-        return {
-            restrict: 'E',
-            templateUrl: "html/login-modal.html"
-        };
-    });
-
-    app.directive("navBar", function() {
-        return {
-            restrict: 'E',
-            templateUrl: "html/nav-bar.html"
-        };
-    });
-    app.directive("cart", function() {
-        return {
-            restrict: 'E',
-            templateUrl: "html/cart.html"
-        };
-    });
-    app.directive("userInfoModal", function() {
-        return {
-            restrict: 'E',
-            templateUrl: "html/user-info-modal.html"
-        };
-    });
-
-
 
 })();
