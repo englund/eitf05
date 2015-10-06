@@ -83,6 +83,7 @@
                 $("#loginText").append("User has been added");
                 $scope.data = data;
             }).error(function(data, status, headers, config) {
+                alert(status);
                 $scope.status = status;
             });
         };
