@@ -17,7 +17,7 @@ $db->closeConnection();
 <html>
 <head><title>Booking 1</title><head>
 <body><h1>Store</h1>
-Current user: <?php print $userId ?>
+Current user: <?php print $_REQUEST['username'] ?>
 <p>
 	Items:
 <p>
