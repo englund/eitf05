@@ -4,15 +4,20 @@ Webshop Project in the course EITF05
 ## Configurations
 
 ### php.ini
-\# These settings are the dafult on a Ubuntu 15.04 server but we list these security settings anyway:
-expose\_php = Off
-display\_errors = Off
-log\_errors = On
+```
+# These settings are the dafult on a Ubuntu 15.04 server but we list these security settings anyway:
+expose_php = Off
+display_errors = Off
+log_errors = On
+```
 
 ### apache2.conf
-ServerTokens Prod \# make server response header field send back only Apache
+```
+ServerTokens Prod # make server response header field send back only Apache
+```
 
 ### virtual host
+```
 <VirtualHost *:80>
 	DocumentRoot /var/www/eitf05
     ServerName localhost
@@ -36,3 +41,4 @@ ServerTokens Prod \# make server response header field send back only Apache
 
     ServerSignature Off
 </VirtualHost>
+```
