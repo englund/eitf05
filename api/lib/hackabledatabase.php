@@ -18,11 +18,11 @@ class HackableDatabase
 
         $db = static::get_connection();
 
-        $query = $db->prepare($sql);
-        if (!$query->execute()) {
+        $query = $db->query($sql);
+        if (!$query) {
             throw new Exceptions\DatabaseException($sql);
         }
-        return $db->lastInsertId();
+        return $query->lastInsertId();
     }
 
     /**
@@ -40,10 +40,8 @@ class HackableDatabase
 
         $db = static::get_connection();
 
-        $query = $db->prepare($sql);
-        $query->setFetchMode(\PDO::FETCH_ASSOC);
-
-        if (!($query->execute())) {
+        $query = $db->query($sql);
+        if (!$query) {
             throw new Exceptions\DatabaseException($sql);
         }
 
