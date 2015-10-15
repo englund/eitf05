@@ -7,7 +7,7 @@
 function send() {
     $.ajax({
         type: "POST",
-        url: "http://81.228.201.233/api/orders.php?action=hackable_create",
+        url: "http://localhost/api/orders.php?action=hackable_create",
         data: {
             "total": "1.2",
             "products": {
@@ -20,11 +20,13 @@ function send() {
     </script>
 </head>
 <body>
-    <input type="button" onclick="send()" value="Send data!">
-    <form method="POST" action="http://81.228.201.233/api/orders.php?action=hackable_create">
+    <input type="button" onclick="send()" value="Send AJAX request">
+    </br>
+    </br>
+    <form method="POST" action="http://localhost/api/orders.php?action=hackable_create">
         <input type="hidden" name="total" value="1.2">
         <input type="hidden" name="products" value="1">
-        <input type="submit" value="send form">
+        <input type="submit" value="Send POST form">
     </form>
 </body>
 </html>
